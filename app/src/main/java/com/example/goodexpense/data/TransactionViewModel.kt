@@ -21,6 +21,14 @@ class TransactionViewModel(application: Application) : AndroidViewModel(applicat
         repository.insert(transaction)
     }
 
+    fun update(transaction: Transaction) = viewModelScope.launch {
+        repository.update(transaction)
+    }
+
+    fun deleteTransaction(id: Int) = viewModelScope.launch {
+        repository.deleteTransaction(id)
+    }
+
     fun getTransactionById(id: Int): LiveData<Transaction?> {
         return repository.getTransactionById(id)
     }

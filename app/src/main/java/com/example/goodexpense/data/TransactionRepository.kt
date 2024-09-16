@@ -10,6 +10,15 @@ class TransactionRepository(private val transactionDao: TransactionDao) {
         transactionDao.insert(transaction)
     }
 
+    suspend fun update(transaction: Transaction) {
+        transactionDao.update(transaction)
+    }
+
+    suspend fun deleteTransaction(id: Int) {
+        transactionDao.deleteTransaction(id)
+    }
+
+
     fun getTransactionById(id: Int): LiveData<Transaction?> {
         return transactionDao.getTransactionById(id)
     }
