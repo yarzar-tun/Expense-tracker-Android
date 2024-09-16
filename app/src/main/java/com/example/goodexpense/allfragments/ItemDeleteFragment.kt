@@ -1,60 +1,47 @@
 package com.example.goodexpense.allfragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.goodexpense.R
+import com.example.goodexpense.data.TransactionViewModel
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ItemDeleteFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ItemDeleteFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    private lateinit var transactionViewModel: TransactionViewModel
+    private var transactionId: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            transactionId = it.getInt("transactionId", -1)
         }
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_item_delete, container, false)
-    }
+        val rootView = inflater.inflate(R.layout.fragment_item_delete, container, false)
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ItemDeleteFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ItemDeleteFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+        transactionViewModel = ViewModelProvider(this).get(TransactionViewModel::class.java)
+
+        // Observe the specific transaction and update the UI
+        if (transactionId != -1) {
+            transactionViewModel.getTransactionById(transactionId).observe(viewLifecycleOwner) { transaction ->
+                if (transaction != null) {
+                    rootView.findViewById<EditText>(R.id.labelInputEdit).setText(transaction.label)
+                    rootView.findViewById<EditText>(R.id.amountInputEdit).setText(transaction.amount.toString())
+                    // Populate other fields as necessary
                 }
             }
+        }
+
+        // Handle the update and delete operations here
+
+        return rootView
     }
 }

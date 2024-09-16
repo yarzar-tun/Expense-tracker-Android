@@ -2,7 +2,6 @@ package com.example.goodexpense.data
 
 import androidx.lifecycle.LiveData
 
-
 class TransactionRepository(private val transactionDao: TransactionDao) {
 
     val allTransactions: LiveData<List<Transaction>> = transactionDao.getAllTransactions()
@@ -11,5 +10,7 @@ class TransactionRepository(private val transactionDao: TransactionDao) {
         transactionDao.insert(transaction)
     }
 
-
+    fun getTransactionById(id: Int): LiveData<Transaction?> {
+        return transactionDao.getTransactionById(id)
+    }
 }

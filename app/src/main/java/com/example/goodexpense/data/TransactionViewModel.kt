@@ -2,12 +2,9 @@ package com.example.goodexpense.data
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.viewModelScope
-
-import kotlinx.coroutines.launch
 import androidx.lifecycle.LiveData
-
-
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 
 class TransactionViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -24,5 +21,7 @@ class TransactionViewModel(application: Application) : AndroidViewModel(applicat
         repository.insert(transaction)
     }
 
-
+    fun getTransactionById(id: Int): LiveData<Transaction?> {
+        return repository.getTransactionById(id)
+    }
 }
